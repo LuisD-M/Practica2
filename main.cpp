@@ -15,22 +15,40 @@ void problema8();
 void problema9();
 void problema10();
 void problema11();
-
-
+void problema12();
+int problema13(int **matriz13, int m13[6][8]);
+void problema14();
+void problema15(int vector15a[], int vector15b[], int *vector15c);
 
 int potencia(int a);
-
-
-
-int potencia(int expo);
+void imprimir(char (&matriz)[15][20]);
+void menu();
+int compdiferentes(int n, int vector[]);
+int compiguales(int n, int vector[]);
+void immatriz(int matriz[5][5]);
 
 int main(){
 
-    int opcion=1, tama4, num5, tama6;
+    int opcion=1, tama4, num5, tama6, n;
     char cadena4[] = {'0','8','3','4','5'};
     char vec5[15] = {};
     char cadena6[] = {'M','a','n','-','s','a','N','a'};
     char vec7[] = {'m','a','m','a','l','l','i','n','i','s'};
+    int m13[6][8]= {{0,3,4,0,0,0,6,8},
+                    {5,13,6,0,0,0,2,3},
+                    {2,6,2,7,3,0,10,0},
+                    {0,0,4,15,4,1,6,0},
+                    {0,0,7,12,6,9,10,4},
+                    {5,0,6,10,6,4,8,0}};
+
+    int **matriz13 = new int*[6];                       //Se reserva la matriz de 6X8 en memoria dinamica para el problema13;
+    for(int i=0; i<6; i++) matriz13[i] = new int[8];
+
+    int vector15a[4]={6,0,9,2};
+    int vector15b[4]={0,0,6,3};
+    int vector15c[4]={0};
+
+
 
 
 
@@ -119,25 +137,30 @@ int main(){
 
         case 12:
             cout<<"Problema #12."<<endl;
-
+            problema12();
             cout<<endl;
             break;
 
         case 13:
             cout<<"Problema #13."<<endl;
-
+            cout<<"El numero de estrellas encontradas en la imagen es: "<<problema13(matriz13, m13)<<endl;
             cout<<endl;
             break;
 
         case 14:
             cout<<"Problema #14."<<endl;
-
+            problema14();
             cout<<endl;
             break;
 
         case 15:
             cout<<"Problema #15."<<endl;
 
+            problema15(vector15a, vector15b, &vector15c[0]);
+            cout<<"La interseccion de los dos rectangulos es: "<<endl;
+            for(int i=0; i<4; i++) cout<<vector15c[i]<<" ";
+
+            cout<<endl;
             cout<<endl;
             break;
 
@@ -148,6 +171,12 @@ int main(){
             break;
 
         case 17:
+            cout<<"Problema #17."<<endl;
+
+            cout<<endl;
+            break;
+
+        case 18:
             cout<<"Problema #17."<<endl;
 
             cout<<endl;
@@ -343,10 +372,10 @@ void problema10(){
     char numero[tam] ={'C','D'};
 
     cout<<"El numero ingresado es: ";
-    for(int i=0; i<tam; i++) cout<<numero[i];
+    for(int i=0; i<tam; i++) cout<<numero[i];                          //Imprime numero
     cout<<endl;
 
-    map<char,int> diccionario ={
+    map<char,int> diccionario ={                                       //Se crea un diccionario
         {'M',1000},
         {'D',500},
         {'C',100},
@@ -356,9 +385,9 @@ void problema10(){
         {'I',1}
     };
 
-    suma=diccionario[numero[0]];
-    for(int i=0; i<tam; i++){
-        if(diccionario[numero[i]]>= diccionario[numero[i+1]] )
+    suma=diccionario[numero[0]];                                     //Suma el primer simbolo, para luego sumar el de la segunda
+    for(int i=0; i<tam; i++){                                        //Posicion de la comparacion
+        if(diccionario[numero[i]]>= diccionario[numero[i+1]] )       // Se realiza las comparaciones de simbolos y se hace operacion
             suma += diccionario[numero[i+1]];
         else
             suma -= diccionario[numero[i+1]];
@@ -367,29 +396,233 @@ void problema10(){
 
     if(suma>0) cout<<"El numero corresponde a: "<<suma<<endl;
     else cout<<"El numero corresponde a: "<<suma*-1<<endl;
-
-
-
-
-
-
-
-
-
-
-
 }
 
 void problema11(){
+    int columna;
+    char fila, opcion = '1';
+    char matriz[15][20];
+
+    for(int i=0; i<15; i++){
+        for(int j=0; j<20; j++) matriz[i][j] = '-';                                    //Se llena la matriz
+    }
+
+    imprimir(matriz);                                                                  //Funcion imprime la matriz
+    cout<<"---------------------------------------------------------------"<<endl;
+
+    while(opcion != '0'){                                                              //Analiza opcion del usuario
+        menu();
+        cout<<"Ingrese su opcion: "; cin>>opcion;
+        opcion = (int)opcion;
+
+        if(opcion== '1'){
+            cout<<"Ingrese el numero de fila a reservar (A-O): "; cin>>fila;
+            cout<<"Ingrese el numero de la columna a reservar: "; cin>>columna;
+            matriz[(int)(fila-65)][columna] ='+';                                     //Casteo para equivalencia de letra en numero
+            imprimir(matriz);                                                         //para buscar la posicion en la matriz
+            cout<<"---------------------------------------------------------------"<<endl;
+        }
+
+        else if(opcion=='2'){
+            cout<<"Ingrese el numero de fila a quitar (A-O): "; cin>>fila;
+            cout<<"Ingrese el numero de la columna a quitar: "; cin>>columna;
+            matriz[(int)(fila-65)][columna] ='-';
+            imprimir(matriz);
+            cout<<"---------------------------------------------------------------"<<endl;
+        }
+    }
+    cout<<endl;
+    cout<<"El menu de reserva a finalizado--------------------------------"<<endl;
+    imprimir(matriz);
+    cout<<endl;
+}
+
+void problema12(){
+    int n, opcion1=0, opcion2=0, opcion3=0, opcion4=1, contador=0, suma=0, di;
+    cout<<"Ingrese  n para la matriz nxn: "; cin>>n;
+
+    di=n-1;                                                                   //Variable que ayuda a sumar la diagonal secundaria
+
+    int matriz[n][n];
+    int vector[n*n];
+    int sumfilas[n];
+    int sumcolumnas[n];
+    int sumdiagonales[2];
+
+    for(int i=0; i<n; i++){                                                    //Se llena la matriz por el usuario
+        for(int j=0; j<n; j++){
+            cout<<"Ingrese los datos de la matriz: "; cin>>matriz[i][j];
+            vector[contador] = matriz[i][j];                                  //Se llena un vector con los numeros de la matriz
+            contador++;}
+    }
+
+    cout<<"La matriz es: "<<endl;                                               //Se imprime la matriz
+    for(int i=0; i<n; i++){
+        for(int j=0; j<n; j++) cout<<" "<<matriz[i][j];
+        cout<<endl;         }
+
+    cout<<endl;
 
 
 
+        opcion1 = compdiferentes(n, vector);                                 //Funcion que compara todos los numeros de la matriz
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++) suma += matriz[i][j];                   //Calcula la suma de las filas
+
+            sumfilas[i] = suma;                                            //guardo ls suma en un vector para luego compararlo
+            suma=0;
+        }
+        opcion2=compiguales(n, sumfilas);                                //comparar que las sumas de la filas sean iguales.
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++) suma += matriz[j][i];                   //Calcula la suma de las columnas
+
+            sumcolumnas[i] = suma;                                            //guardo ls suma en un vector para luego compararlo
+            suma=0;
+        }
+        opcion3=compiguales(n, sumcolumnas);                             //comparar que las sumas de las columnas sean iguales.
+
+        if(opcion1==0 && opcion2==0 && opcion3==0){                     //Si se cumplen las anteriores, analiza las diagonales
+            for(int i=0; i<n; i++){
+                for(int j=0; j<n; j++){
+                    if(i==j) suma += matriz[i][j];                         //Calcula la suma de la diagonal principal
+                }
+            }
+            sumdiagonales[0] = suma;                                   //guardo ls suma en el vector de suma de diagonales
+            suma=0;
+
+            for(int i=0; i<n; i++){                                       //Suma la diagonal secundaria
+                suma += matriz[i][di];
+                di--;
+            }
+            sumdiagonales[1] = suma;
+
+            if(sumdiagonales[0]!=sumdiagonales[1]) opcion4=1;            //Analiza que la suma de las 2 diagonales sea igual
+            else opcion4=0;
+        }
+
+    if(opcion4==1) cout<<"La matriz no es un cuadrado magico"<<endl;         //Analiza la opcion;
+    else
+        cout<<"La matriz es un cuadrado magico"<<endl;
+}
+
+int problema13(int **matriz13, int m13[6][8]){
+    int x=0;
+    float suma=0;
+
+    for(int i=0; i<5;i++){                                                 //Se llena la matriz dinamica con la matriz estatica
+        for(int j=0; j<8;j++) matriz13[i][j] = m13[i][j];
+    }
+
+    for(int i=1; i<6;i++){                                                 //Se recorre la matriz para hacer la suma.
+        for(int j=1; j<7;j++){
+                suma = (matriz13[i][j] + matriz13[i][j-1] + matriz13[i][j+1] + matriz13[i-1][j] + matriz13[i+1][j]);
+                suma =suma/6;
+                if(suma>6) x++;
+                suma=0;
+        }
+    }
+
+    for (int i=0; i<6; i++) delete[] matriz13[i];                         //Libera la memoria de las filas
+    delete[] matriz13;                                                    //Libera la memoria del puntero
+
+    return x;
+}
+
+void problema14(){
+    int contador=1;
+    int matriz[5][5];
+    int matriz90[5][5];
+    int matriz180[5][5];
+    int matriz270[5][5];
 
 
+    for(int i=0; i<5; i++){
+        for(int j=0; j<5;j++){
+            matriz[i][j] =contador;
+            contador++;     }
+    }
+    cout<<"La matriz original es: "<<endl;
+    immatriz(matriz);
+    cout<<endl;
 
+    for(int i=0; i<5; i++){
+        for(int j=0; j<5; j++) matriz90[j][5-1-i] = matriz[i][j];           //Se llena la matriz de 90
+    }
+    cout<<"La matriz rotada 90 grados es: "<<endl;
+    immatriz(matriz90);
+    cout<<endl;
+
+    for(int i=0; i<5; i++){
+        for(int j=0; j<5; j++) matriz180[j][5-1-i] = matriz90[i][j];           //Se llena la matriz de 180
+    }
+    cout<<"La matriz rotada 180 grados es: "<<endl;
+    immatriz(matriz180);
+    cout<<endl;
+
+    for(int i=0; i<5; i++){
+        for(int j=0; j<5; j++) matriz270[j][5-1-i] = matriz180[i][j];           //Se llena la matriz de 180
+    }
+    cout<<"La matriz rotada 270 grados es: "<<endl;
+    immatriz(matriz270);
+    cout<<endl;
 
 }
 
+void problema15(int vector15a[], int vector15b[], int *vector15c){
+
+    if(vector15b[0]>=vector15a[0] && vector15b[0]<vector15a[2]){
+        if(vector15b[1]>=vector15a[1] && vector15b[1]<vector15a[3]){
+
+            vector15c[0] = vector15b[0];
+            vector15c[1] = vector15b[1];
+            vector15c[2] = vector15a[2];
+            vector15c[3] = vector15a[3];
+        }
+        else cout<<"Los rectangulos no tienen interseccion. "<<endl;
+    }
+    else cout<<"Los rectangulos no tienen interseccion. "<<endl;
+}
+
+
+
+
+int compdiferentes(int n, int vector[]){
+    int x=0;
+    for(int i=0; i<(n*n); i++){                                          //Verifica que los numeros de la matriz sean diferentes
+        for(int j=i+1; j<(n*n); j++){
+            if(vector[i] == vector[j]) x=1;
+        }
+    }
+    return x;
+}
+int compiguales(int n, int vector[]){
+    int x=0;
+    for(int i=0; i<n; i++){                                          //Verifica que los numeros del vector sean iguales
+        for(int j=i+1; j<n; j++){
+            if(vector[i] != vector[j]) x=1;
+        }
+    }
+    return x;
+}
+
+
+
+void imprimir(char (&matriz)[15][20]){
+    cout<<"    0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19"<<endl;
+    for(int i=0; i<15; i++){
+        cout<<(char)(65 + i)<<":";
+        for(int j=0; j<20; j++)cout<<"  "<<matriz[i][j];
+
+        cout<<endl;
+    }
+}
+void menu(){
+    cout<<"Menu de reserva"<<endl;
+    cout<<"Para hacer una reserva presione 1."<<endl;
+    cout<<"Para hacer eliminar una reserva presione 2."<<endl;
+    cout<<"Para salir del menu de reserva presione 0."<<endl;}
 int potencia(int a){
     int p=1;
     for(int i=1; i<=a; i++)       //calcula 10 elevado al numero que le entre
@@ -398,7 +631,12 @@ int potencia(int a){
     return p;
 }
 
-
+void immatriz(int matriz[5][5]){
+    for(int i=0; i<5; i++){
+        for(int j=0; j<5; j++) cout<<matriz[i][j]<<" ";
+        cout<<endl;
+    }
+}
 
 
 

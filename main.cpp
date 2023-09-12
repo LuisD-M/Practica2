@@ -19,6 +19,11 @@ void problema12();
 int problema13(int **matriz13, int m13[6][8]);
 void problema14();
 void problema15(int vector15a[], int vector15b[], int *vector15c);
+void problema16(int fil, int col, int n, int *total);
+void problema17();
+void problema18();
+
+
 
 int potencia(int a);
 void imprimir(char (&matriz)[15][20]);
@@ -26,10 +31,13 @@ void menu();
 int compdiferentes(int n, int vector[]);
 int compiguales(int n, int vector[]);
 void immatriz(int matriz[5][5]);
+int factorial(int a);
+
+
 
 int main(){
 
-    int opcion=1, tama4, num5, tama6, n;
+    int opcion=1, tama4, num5, tama6, n16, total16=0;
     char cadena4[] = {'0','8','3','4','5'};
     char vec5[15] = {};
     char cadena6[] = {'M','a','n','-','s','a','N','a'};
@@ -166,19 +174,23 @@ int main(){
 
         case 16:
             cout<<"Problema #16."<<endl;
-
+            cout<<"Ingrese un numero:"; cin>>n16;
+            n16 +=1;
+            problema16(0, 0, n16, &total16);
+            cout<<"Para una malla de "<<n16-1<<"X"<<n16-1<<" hay "<<total16<<" caminos."<<endl;
             cout<<endl;
+            total16=0;
             break;
 
         case 17:
             cout<<"Problema #17."<<endl;
-
+            problema17();
             cout<<endl;
             break;
 
         case 18:
             cout<<"Problema #17."<<endl;
-
+            problema18();
             cout<<endl;
             break;
 
@@ -227,7 +239,7 @@ void problema2(){
 }
 
 bool problema3(){
-    char cad1[] = {'e', 'a', 'g', '5'}, cad2[] = {'e', 'a', 'g', '5'};
+    char cad1[] = {'e', 'a', 'a', '5'}, cad2[] = {'e', 'a', 'g', '5'};
     int tam1, tam2, cont=0;
     bool igualdad=true;
 
@@ -273,7 +285,7 @@ void problema5(int *num5, char *vec5){
         cifras++;}
 
     for(int i=0; i<cifras; i++){                                 //Ciclo para llenar el vector en char
-        vec5[cifras-1 -i] = (char)(aux%10 + 48);                 //llena el vector de la pisicion final a inicial
+        vec5[cifras-1 -i] = (char)(aux%10 + 48);                 //llena el vector de la p0sicion final a inicial
         aux/=10;                                                 //Se castea el valor de acuerdo a la tabla ascii
     }
 
@@ -283,7 +295,7 @@ void problema5(int *num5, char *vec5){
 
 char problema6(char cadena6[], int tama){
 
-    cout<<"Original: ";
+    cout<<"Original: ";                                                     //Imprime la cadena original
     for(int i=0; i<tama; i++)
         cout<<cadena6[i];
 
@@ -293,7 +305,7 @@ char problema6(char cadena6[], int tama){
 
     cout<<endl;
 
-    cout<<"En mayuscula: ";
+    cout<<"En mayuscula: ";                                                //Se imprime la cadena convertida
     for(int i=0; i<tama; i++)
         cout<<cadena6[i];
 
@@ -308,7 +320,7 @@ void problema7(char *vec7){
     cout<<endl;
 
     cout<<"Sin repetidos: ";
-    for(int i=0; i<10; i++){                                //Primer elementos a analizar
+    for(int i=0; i<10; i++){                                //Primer elemento a analizar
         for(int j=i+1; j<10;j++){                           //Se analizar con los siguientes en el arreglo
             if(vec7[i]==vec7[j]) vec7[j]=NULL;   }          //Si encuentra repetidos borra uno con el caracter nulo
     }
@@ -327,7 +339,7 @@ void problema8(){
         if((int)cadena[i]>47 && (int)cadena[i]<58 ){          //Analisa si el caracter es un numero en la tabla ascii
             cadena1[contador] = cadena[i];                    // agrega el numero a la nueva cadena en la posicion de contador
             contador++;                                       // contador ayuda a ir en posiciones consecutivas y a saber cuantos datos son
-            cadena[i] =NULL;    }
+            cadena[i] = NULL;    }
     }
     cout<<endl;
     cout<<"Texto: ";
@@ -335,10 +347,6 @@ void problema8(){
 
     cout<<". "<<"Numero: ";
     for(int i=0; i<contador; i++) cout<<cadena1[i];
-
-
-
-
 }
 
 void problema9(){
@@ -416,7 +424,7 @@ void problema11(){
         opcion = (int)opcion;
 
         if(opcion== '1'){
-            cout<<"Ingrese el numero de fila a reservar (A-O): "; cin>>fila;
+            cout<<"Ingrese la letra  de fila a reservar (A-O): "; cin>>fila;
             cout<<"Ingrese el numero de la columna a reservar: "; cin>>columna;
             matriz[(int)(fila-65)][columna] ='+';                                     //Casteo para equivalencia de letra en numero
             imprimir(matriz);                                                         //para buscar la posicion en la matriz
@@ -424,7 +432,7 @@ void problema11(){
         }
 
         else if(opcion=='2'){
-            cout<<"Ingrese el numero de fila a quitar (A-O): "; cin>>fila;
+            cout<<"Ingrese la letra de fila a quitar (A-O): "; cin>>fila;
             cout<<"Ingrese el numero de la columna a quitar: "; cin>>columna;
             matriz[(int)(fila-65)][columna] ='-';
             imprimir(matriz);
@@ -462,8 +470,6 @@ void problema12(){
         cout<<endl;         }
 
     cout<<endl;
-
-
 
         opcion1 = compdiferentes(n, vector);                                 //Funcion que compara todos los numeros de la matriz
 
@@ -585,6 +591,76 @@ void problema15(int vector15a[], int vector15b[], int *vector15c){
     else cout<<"Los rectangulos no tienen interseccion. "<<endl;
 }
 
+void problema16(int fil, int col, int n, int *total){
+
+    if(col+1<n) problema16(fil, col+1, n, total);
+    if(fil+1<n) problema16(fil+1, col, n, total);
+    if(fil==col && fil==n-1) *total +=1;
+
+
+
+
+}
+
+void problema17(){
+    int n, sumn=0, sumdiv=0, sumtotal=0, cont=0;
+
+    cout<<"Ingrese un numero: "; cin>>n;
+
+    for(int i=1; i<n; i++){                                       //Calcula la suma de los divisores del numero
+        if(n%i==0) sumn += i;
+    }
+
+    for(int i=1; i<n; i++){                                       // Ciclo para analizar los numeros menores al ingresado
+        for(int j=1; j<i; j++){                                       //Calcula la suma de los divisores de cada numero
+            if(i%j==0) sumdiv += j;
+        }
+
+        if(sumn==i && sumdiv==n){                                //Se analiza la condicion para ser numeros amigables
+            cout<<i<<endl;
+            sumtotal += i;                                       //Si se cumple la condicion, suma el numero amigable
+            cont++;
+        }
+        sumdiv=0;
+    }
+
+    if(cont>0) cout<<"La suma de los numeros amigables a "<<n<<" menores que el mismo es: "<<sumtotal+n<<endl;
+    else
+        cout<<"La suma de los numeros amigables a "<<n<<" menores que el mismo es: "<<0<<endl;
+}
+
+void problema18(){
+    int n, iteracion, numero;
+    cout<<"ingrese el numero de la iteracion: "; cin>>n;
+
+    int resultado[10]= {0,0,0,0,0,0,0,0,0,0};
+    int digitos[] = {0,1,2,3,4,5,6,7,8,9};
+
+    iteracion = n-1;                                                            //para empezar desde cero
+
+    if(n>0 && n<=factorial(10)){                                                //Condicion maximo de iteraciones en los digitos 0-9
+
+        for(int i=0; i<n; i++){
+
+            numero = iteracion/factorial(9-i);                            //Condicion para encontrar el primer digito de la iteracion
+            resultado[i] = digitos[numero];
+
+            for(int j=numero; j<9-i; j++)
+                digitos[j] = digitos[j+1];                                //Se elimina el digito ya encontrado para no repetir
+
+            iteracion %= factorial(9-i);                                  //Se calcula el nuevo valor de iteracion
+            cout<<iteracion<<endl;
+        }
+
+        cout<<"La permutacion numero "<<n<<" es: "<<endl;
+
+        for(int i=0; i<10; i++) cout<<resultado[i];
+
+        cout<<endl;
+    }
+    else
+        cout<<"El numero ingresado no es valido"<<endl;
+}
 
 
 
@@ -638,7 +714,12 @@ void immatriz(int matriz[5][5]){
     }
 }
 
+int factorial(int a){
+    int x=1;
+    for(int i=2; i<=a; i++) x *= i;
 
+    return x;
+}
 
 
 

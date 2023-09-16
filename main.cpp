@@ -23,6 +23,11 @@ void problema16(int fil, int col, int n, int *total);
 void problema17();
 void problema18();
 
+void problema1ARDUINO();
+void problema6ARDUINO();
+void problema10ARDUINO();
+void problema17ARDUINO();
+
 
 
 int potencia(int a);
@@ -722,11 +727,184 @@ int factorial(int a){
 }
 
 
+void problema1ARDUINO(){
+
+    /*
+// Problema 1 Arduino
+
+void setup()
+{
+  Serial.begin(57600);
+}
+
+void loop()
+{
+  long int billetes[10] = {50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50};
+  long int plata = 0;
+  Serial.println("Ingrese el valor de plata: ");
+
+  while(Serial.available() == 0){}
+  plata = Serial.parseInt();
+
+  Serial.println(plata);
+
+  for(int i=0; i<10; i++){
+    if((plata/billetes[i])>0){
+
+      Serial.print(billetes[i]);
+      Serial.print(":");
+      Serial.println(plata/billetes[i]);
+
+      plata = plata - billetes[i]*(plata/billetes[i]);
+    }
+    else {
+        Serial.print(billetes[i]);
+        Serial.print(":");
+        Serial.println(0);
+        }
+  }
+    Serial.print("Faltante: ");
+    Serial.println(plata);
+}
+    */
+
+}
+
+void problema6ARDUINO(){
+    /*
+void setup() {
+  Serial.begin(9600);
+
+}
+
+void loop() {
+  int tama6=0;
+  int condicion=1;
+  char cadena6[] = {'M','a','n','-','s','a','N','a'};
+
+  tama6=sizeof(cadena6)/sizeof(cadena6[0]);
+
+  Serial.print("Original: ");                                   //Imprime la cadena original
+  for(int i=0; i<tama6; i++)
+      Serial.print(cadena6[i]);
+
+  for(int i=0; i<tama6; i++){
+      if((int)cadena6[i]>96 && cadena6[i]<123)
+          cadena6[i] = (char)((int)cadena6[i] - 32);  }
+
+  Serial.println(" ");
 
 
+  Serial.print("En mayuscula: ");                               //Se imprime la cadena convertida
+  for(int i=0; i<tama6; i++)
+      Serial.print(cadena6[i]);
+
+  Serial.print(" ");
+
+  while(Serial.available() == 0){}
+
+}
+    */
+
+}
+
+void problema10ARDUINO(){
+    /*
+#include <map>
+
+map<char, int> diccionario;
+
+void setup() {
+  Serial.begin(9600);
+  diccionario['M'] = 1000;
+  diccionario['D'] = 500;
+  diccionario['C'] = 100;
+  diccionario['L'] = 50;
+  diccionario['X'] = 10;
+  diccionario['V'] = 5;
+  diccionario['I'] = 1;
+
+}
+
+void loop() {
+  int tam = 2, suma=0;
+  char numero[tam] ={'C','D'};
+
+  Serial.print("El numero ingresado es: ");
+  for(int i=0; i<tam; i++) print(numero[i]);                          //Imprime numero
+  Serial.println();
+
+  suma=diccionario[numero[0]];                                     //Suma el primer simbolo, para luego sumar el de la segunda
+  for(int i=0; i<tam; i++){                                        //Posicion de la comparacion
+      if(diccionario[numero[i]]>= diccionario[numero[i+1]] )       // Se realiza las comparaciones de simbolos y se hace operacion
+          suma += diccionario[numero[i+1]];
+      else
+          suma -= diccionario[numero[i+1]];
+
+  }
+
+  if(suma>0) {
+        Serial.println("El numero corresponde a: ");
+        Serial.println(suma);
+        }
+  else {
+        Serial.println("El numero corresponde a: ");
+        Serial.println(suma*-1);
+        }
+
+  while(Serial.available() == 0){}
+
+}
+
+    */
 
 
+}
 
+void problema17ARDUINO(){
+    /*
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+    int n, sumn=0, sumdiv=0, sumtotal=0, cont=0;
+
+    Serial.print("Ingrese un numero: ");
+    while(Serial.available() == 0){}
+
+    n=Serial.parseInt();
+
+    for(int i=1; i<n; i++)                                       //Calcula la suma de los divisores del numero
+        if(n%i==0) sumn += i;
+
+    for(int i=1; i<n; i++){                                       // Ciclo para analizar los numeros menores al ingresado
+        for(int j=1; j<i; j++)                                       //Calcula la suma de los divisores de cada numero
+            if(i%j==0) sumdiv += j;
+
+        if(sumn==i && sumdiv==n){                                //Se analiza la condicion para ser numeros amigables
+            Serial.println(i);
+            sumtotal += i;                                       //Si se cumple la condicion, suma el numero amigable
+            cont++;
+        }
+        sumdiv=0;
+    }
+
+    if(cont>0) {
+      Serial.print("La suma de los numeros amigables a ");
+      Serial.print(n);
+      Serial.print(" menores que el mismo es: ");
+      Serial.println(sumtotal+n);
+    }
+    else{
+      Serial.print("La suma de los numeros amigables a ");
+      Serial.print(n);
+      Serial.print(" menores que el mismo es: ");
+      Serial.println(0);
+    }
+}
+    */
+}
 
 
 
